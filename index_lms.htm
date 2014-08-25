@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Libary</title>
+    <!--// Stylesheets //-->
+    <link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
+    <!--// Javascripts //-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/styleswitch.js"></script>
+    <script type="text/javascript" src="js/animatedcollapse.js"></script>
+    <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+    <script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
+    <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script language="javascript" type="text/javascript">
+        <!--
+        //获得当前时间,刻度为一千分一秒
+        var initializationTime = (new Date()).getTime();
+        function showLeftTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            document.all.show.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
+//一秒刷新一次显示时间
+            var timeID = setTimeout(showLeftTime, 1000);
+        }
+        //-->
+    </script>
+
+</head>
+
+<body onload="showLeftTime()">
+<!-- Wrapper Start -->
+<div id="outer_wrapper">
+    <!-- Top Bar Start -->
+    <div id="top-bar" class="backcolr">
+        <div class="inner">
+            <!-- Styleswitcher Start -->
+            <div class="styles">
+                <ul>
+                    <li><h6 class="white">Select Color Schemes:</h6></li>
+                    <li><a href="index.html@style=style1" rel="styles1" class="styleswitch red">&nbsp;</a></li>
+                    <li><a href="index.html@style=style2" rel="styles2" class="styleswitch blue">&nbsp;</a></li>
+                    <li><a href="index.html@style=style3" rel="styles3" class="styleswitch gray">&nbsp;</a></li>
+                    <li><a href="index.html@style=style4" rel="styles4" class="styleswitch orange">&nbsp;</a></li>
+                    <li><a href="index.html@style=style5" rel="styles5" class="styleswitch green">&nbsp;</a></li>
+                    <li><a href="index.html@style=style6" rel="styles6" class="styleswitch orange-red">&nbsp;</a></li>
+                </ul>
+            </div>
+            <!-- Styleswitcher End -->
+            <!-- Top Bar Text Start -->
+            <!--  时间显示-->
+            <p class="text">Now Times: <label id="show">显示时间的位置</label></p>
+            <!-- Top Bar Text End -->
+        </div>
+        <div class="clear"></div>
+        <!-- Toggle Show Hide Div Start -->
+        <div id="jason" class="topwidgets">
+            <div class="inner">
+            </div>
+            <!-- Widget Placeholder End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Top Bar End -->
+<!-- Header Start -->
+<div id="header">
+    <div class="rays">
+        <div class="inner">
+            <!-- Logo Start -->
+            <div class="logo">
+                <a href="index.jsp"><img src="images/index_picture/fujitsu_log6.png" alt=""/></a>
+            </div>
+            <!-- Logo End -->
+            <div class="right">
+                <!-- Navigation Start -->
+                <div class="navigation">
+                    <div id="smoothmenu1" class="ddsmoothmenu">
+                        <ul>
+                            <li class="current-menu-item"><a href="index_lms.htm">首页</a></li>
+                            <li><a href="Reader.htm">读者管理</a></li>
+                            <li><a href="#">书刊管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Book_add.htm">图书入库</a></li>
+                                    <li><a href="Book.htm">分类管理</a></li>
+                                    <li><a href="Book_buy.htm">书刊购买</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">统计报表</a>
+                                <ul class="backcolr">
+                                    <li><a href="Report_list.htm">统计表格</a></li>
+                                    <li><a href="#">统计图形</a>
+                                        <ul>
+                                            <li><a href="histogram.htm">柱状图</a></li>
+                                            <li><a href="sector_diagram.htm">扇形图</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#">借阅管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Borrow_authority.htm">借阅权限</a></li>
+                                    <li><a href="Borrow_return.htm">借书/还书</a></li>
+                                    <li><a href="Borrow_log.htm">借阅记录</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">系统设置</a>
+                                <ul class="backcolr">
+                                    <li><a href="System_metadata.htm">元数据设置</a></li>
+                                    <li><a href="#">账号密码管理</a>
+                                        <ul>
+                                            <li><a href="Manager_password.htm">管理员密码维护</a></li>
+                                            <li><a href="User_password.htm">读者端密码维护</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="Sysrem_message.htm">消息推送</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End --></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <!-- Navigation End -->
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Header End -->
+<!-- Banner Start -->
+<div id="banner">
+    <div class="slider-wrapper theme-default">
+        <div id="slider" class="nivoSlider">
+            <a href="#"><img src="images/index_picture/flower_book.jpeg" title="#banner1" alt=""/></a>
+            <a href="#"><img src="images/index_picture/coffeelady.jpg" title="#banner2" alt=""/></a>
+            <a href="#"><img src="images/index_picture/DSC02681.JPG" title="#banner3" alt=""/></a>
+        </div>
+        <!-- Banner Caption Start -->
+        <div id="banner1" class="nivo-html-caption">
+            <div class="ban-capt-desc">
+                <div class="ban-capt-mid">
+                    <div class="ban-capt-in">
+                        <h1 class="white">"Sharping tomorrow with you ."</h1>
+
+                        <p>
+                            Fusce auctor nulla eget lacus pretium imperdiet ultrices turpis varius. Nunc justo nibh,
+                            tincidunt ut ullamcorper condimentum, dignissim id sapien. Fusce auctor nulla eget lacus
+                            pretium imperdiet ultrices turpis varius. Nunc justo nibh, tincidunt ut ullamcorper
+                            condimentum,
+                            dignissim id sapien.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner Caption End -->
+    </div>
+</div>
+<!-- Banner End -->
+<!-- Content Section Start -->
+<div id="contentsec">
+    <div class="inner">
+        <!-- Fullwidth Box Start -->
+        <div class="fullwidth box left">
+            <div class="widgets-area-conts">
+                <!-- Widget PlaceHolder Start -->
+                <div class="widget-placeholder">
+                    <!-- Text Widget Start -->
+                    <div class="widget textwidget">
+                        <h3 class="widget-head">读者留言
+                            <a href="#" style="float:right;">more</a></h3>
+                        <MARQUEE scrolldelay="100" direction="up">
+                            <p>《盗墓笔记》是本好书~&nbsp;&nbsp;<h4 class="colr">DingDing</h4></p>
+                            <p>可以多添加点技术书籍。人生若只如初见，效率会不会更高一些。&nbsp;&nbsp;<h4 class="colr">Nancy</h4></p>
+                            <p>技术书怎么看才有效率呢？天天看书天天向上！&nbsp;&nbsp;<h4 class="colr">Pete</h4></p>
+
+                        </MARQUEE>
+                        <div class="clear"></div>
+                    </div>
+                    <!-- Text Widget End -->
+                </div>
+                <!-- Widget PlaceHolder End -->
+                <!-- Widget PlaceHolder Start -->
+                <div class="widget-placeholder">
+                    <!-- Calendar Widget Start -->
+                    <div class="widget wp-calendar">
+                        <h3 class="widget-head">借书/还书/续借
+                        </h3>
+
+                        <div>
+                            <a href="Borrow_return.htm"><img src="images/button_return_renew_borrow.png" height="260px"
+                                                             width"260px"></img></a>
+                        </div>
+                    </div>
+                    <!-- Calendar Widget End -->
+                </div>
+                <!-- Widget PlaceHolder End -->
+                <!-- Widget PlaceHolder Start -->
+                <div class="widget-placeholder">
+                    <!-- Upcoming Widget Start -->
+                    <div class="widget upcoming-events">
+                        <h3 class="widget-head-border colr">信息显示</h3>
+                        <ul>
+                            <li>
+                                <div class="date">
+                                    <span>01</span>
+                                </div>
+                                <div class="desc">
+                                    <a href="#" class="title txthover">当前用户：</a>
+
+                                    <p class="time">宋双</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="date">
+                                    <span>02</span>
+                                </div>
+                                <div class="desc">
+                                    <a href="#" class="title txthover">书刊总计</a>
+
+                                    <p class="time">14446本</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="date">
+                                    <span>03</span>
+                                </div>
+                                <div class="desc">
+                                    <a href="#" class="title txthover">在线人数：150人</a>
+
+                                    <p class="time">12:00 PM - 1:00 PM</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Upcoming Widget End -->
+                    <!-- Calendar Widget End -->
+                </div>
+                <!-- Widget PlaceHolder End -->
+
+            </div>
+        </div>
+        <!-- Fullwidth Box End -->
+        <!-- One Third Box Start -->
+        <div class="onethird right">
+            <!-- One Third Box Start -->
+            <div class="onethird box left">
+                <!-- Upcoming Widget Start -->
+
+                <!-- Upcoming Widget End -->
+            </div>
+            <!--   One Third Box End -->
+        </div>
+        <!-- Footer Scroller Start -->
+        <div class="fullwidth left scroll-sec">
+            <h3 class="widget-head-border colr">最需要的十本书</h3>
+            <a id="logoPrevious">Previous</a>
+
+            <div id="logoscroll" class="scroller">
+                <!--  需求TOP10的书籍-->
+                <ul>
+                    <li><a href="#"><img src="images/book_top10/bainiangudu.jpg" alt="" height="100" width="80"/></a>
+                    </li>
+                    <li><a href="#"><img src="images/book_top10/congcongnanian.jpg " alt=" " height="100"
+                                         width="80"/></a></li>
+                    <li><a href="#"><img src="images/book_top10/daomubiji.jpg " alt=" " height="100" width="80"/></a>
+                    </li>
+                    <li><a href="#"><img src="images/book_top10/houheixue.jpg" alt="" height="100" width="80"/></a></li>
+                    <li><a href="#"><img src="images/book_top10/langtuteng.jpg " alt="" height="100" width="80"/></a>
+                    </li>
+                    <li><a href="#"><img src="images/book_top10/lunyu.jpg" alt="" height="100" width="80"/></a></li>
+                    <li><a href="#"><img src="images/book_top10/maitianshouwangzhe.jpg" alt="" height="100" width="80"/></a>
+                    </li>
+                    <li><a href="#"><img src="images/book_top10/renxingderuodian.jpg" alt="" height="100"
+                                         width="80"/></a></li>
+                    <li><a href="#"><img src="images/book_top10/zailushang.jpg" alt="" height="100" width="80"/></a>
+                    </li>
+                    <li><a href="#"><img src="images/book_top10/zhuifengzhengderen.jpg" alt="" height="100" width="80"/></a>
+                    </li>
+                </ul>
+            </div>
+            <a id="logoNext">Next</a>
+        </div>
+        <!-- Footer Scroller End -->
+    </div>
+
+    <!-- Footer Start -->
+
+    <div id="footer">
+        <div class="footer-rays">
+            <div class="inner">
+                <!-- Footer Logo - Navigation - Copyrights Start -->
+                <div class="foot-navi-coopyrights">
+                    <div class="footlogo-nav">
+                        <!-- Footer Logo Start -->
+                        <div class="footlogo">
+                            <a href="#"><img src="images/index_picture/fujitsu_log5.png" alt=""/></a>
+                        </div>
+                        <!-- Footer Logo End -->
+                        <div class="footnav">
+                            <ul>
+                                <li><a href="#">首页</a></li>
+                                <li><a href="#">读者管理</a></li>
+                                <li><a href="#">书刊管理</a></li>
+                                <li><a href="#">统计报表</a></li>
+                                <li><a href="#">积分管理</a></li>
+                                <li><a href="#">系统设置</a></li>
+                            </ul>
+                        </div>
+                        <!-- Footer Navigation End -->
+                    </div>
+                </div>
+                <!-- Footer Logo - Navigation - Copyrights End -->
+                <!-- Follow Us - Go to Top Start -->
+                <div class="followus">
+                    <!-- Go to Top Start -->
+                    <div class="gotop">
+                        <a href="#top">&nbsp;</a>
+                        <span>Back to Top</span>
+                    </div>
+                    <!-- Go to Top End -->
+                </div>
+                <!-- Follow Us - Go to Top End -->
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer End -->
+</div>
+<!-- Wrapper End -->
+
+</body>
+</html>

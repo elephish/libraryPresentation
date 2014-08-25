@@ -1,0 +1,544 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Libary</title>
+    <!--// Stylesheets //-->
+    <link href="LMSG2_files/css.css" rel="stylesheet" type="text/css"/>
+    <link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
+    <!--// Javascripts //-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/styleswitch.js"></script>
+    <script type="text/javascript" src="js/animatedcollapse.js"></script>
+    <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+    <script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
+    <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script language="javascript" type="text/javascript">
+        <!--
+        //获得当前时间,刻度为一千分一秒
+        var initializationTime = (new Date()).getTime();
+        function showLeftTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
+//一秒刷新一次显示时间
+            var timeID = setTimeout(showLeftTime, 1000);
+        }
+        //-->
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //保存扫描时获取的各种信息
+            var serialNoFromScanner = '001';
+            var isValid = 0;
+            var isBorrowed = 0;
+
+            //保存员工的额外信息,将在输入员工号后刷新
+            var readerKind = 0;
+            var limitBookNo = 0;
+            var borrowedNo = 0;
+
+            //书刊条码扫描
+            $("#isbn").blur(function (event) {
+                if ($.trim($(this).val()) == '') {
+                    return;
+                };
+                //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
+                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                    });
+            });
+
+            function checkBookStatus(){
+                //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
+                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                    });
+            }
+
+            //右侧图片上的三个链接
+            $("#borrowBookImg").click(function (event) {
+                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                        if ($.trim($("#isbn").val()) == '' || $.trim($("#userNo").val()) === '') {
+                            alert('请录入书刊和员工信息');
+                            return;
+                        }
+                        if (isValid == 0) {  //不存在
+                            alert("书刊不存在");
+                            return;
+                        }
+                        if (isBorrowed == 1) {
+                            alert("书刊已借出");
+                            return;
+                        }
+                        if ($.inArray(readerKind, noAuthorityReaderKinds) != -1) {
+                            alert("该员工没有借书资格");
+                            return;
+                        }
+                        if ($("#isbn").val().substr(0, 5) == japaneseBookISBN && $.inArray(readerKind, noAuthorityReaderKindsForJapaneseBook) != -1) {
+                            alert("该员工没有借日文原版书资格");
+                            return;
+                        }
+                        if (borrowedNo >= limitBookNo) {
+                            alert("该员工可借" + limitBookNo + "本，已借" + borrowedNo + "本，无法再借");
+                            return;
+                        }
+                        $.getJSON(remoteIP + '/managerBorrowBook',
+                                // {userNo: '009021', isbn:'978-7-115-14554-3', serialNo:'001'},
+                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                                function (json, textStatus) {
+                                    alert(json.success === undefined ? json.error : json.success);
+                                });
+                    });
+
+            });
+            $("#returnBookImg").click(function (event) {
+                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                        if (isValid == 0) {  //不存在
+                            alert("书刊不存在");
+                            return;
+                        }
+                        if (isBorrowed == 0) {
+                            alert("书刊未被借出，无法归还");
+                            return;
+                        }
+                        $.getJSON(remoteIP + '/managerReturnBook',
+                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                                // {userNo: '009021', isbn: '978-7-115-14554-3', serialNo: '001'},
+                                function (json, textStatus) {
+                                    alert(json.success === undefined ? json.error : json.success);
+                                });
+                    });
+
+
+            });
+            $("#renewBookImg").click(function (event) {
+                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+
+                        if (isValid == 0) {  //不存在
+                            alert("书刊不存在");
+                            return;
+                        }
+                        if (isBorrowed == 0) {
+                            alert("书刊未被借出，无法续借");
+                            return;
+                        }
+                        $.getJSON(remoteIP + '/managerRenewBook',
+                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                                // {userNo: '009021', isbn: $("#isbn").val(), serialNo: '001'},
+                                function (json, textStatus) {
+                                    alert(json.success === undefined ? json.error : json.success);
+                                });
+                    });
+                
+            });
+
+            //根据读者工号查询读者信息
+            $("#userNo").blur(function (event) {
+                $.getJSON(remoteIP + '/managerGetUser', {userNo: $.trim($("#userNo").val()) }, function (json, textStatus) {
+                    //先清除原有数据
+                    $("#userName").add($("#userName")).add($("#deptName")).add($("#userMail")).text('');
+                    //再填充新的数据
+                    var reader = json;
+                    $("#userName").text(reader.userName);
+                    $("#deptName").text(reader.deptName);
+                    $("#userMail").text(reader.userMail);
+                    readerKind = reader.AUTHORITY_ID; //TODO,需查明实际字段
+                    limitBookNo = reader.limitBookNo; //TODO,需查明实际字段
+                    borrowedNo = reader.borrowedNo; //TODO,需查明实际字段
+                });
+            });
+            //如果在“读者工号”栏按回车键,调用上面的函数
+            $("#userNo").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    $("#userNo").blur();
+                }
+            });
+
+        });
+
+    </script>
+
+</head>
+<body onload="showLeftTime()">
+<frameset rows="20%,60%,*">
+<!-- Wrapper Start -->
+<frame>
+<div id="outer_wrapper">
+    <!-- Top Bar Start -->
+    <div id="top-bar" class="backcolr">
+        <div class="inner">
+            <!-- Styleswitcher Start -->
+            <div class="styles">
+                <ul>
+                    <li><h6 class="white">Select Color Schemes:</h6></li>
+                    <li><a href="index.html@style=style1" rel="styles1" class="styleswitch red">&nbsp;</a></li>
+                    <li><a href="index.html@style=style2" rel="styles2" class="styleswitch blue">&nbsp;</a></li>
+                    <li><a href="index.html@style=style3" rel="styles3" class="styleswitch gray">&nbsp;</a></li>
+                    <li><a href="index.html@style=style4" rel="styles4" class="styleswitch orange">&nbsp;</a></li>
+                    <li><a href="index.html@style=style5" rel="styles5" class="styleswitch green">&nbsp;</a></li>
+                    <li><a href="index.html@style=style6" rel="styles6" class="styleswitch orange-red">&nbsp;</a></li>
+                </ul>
+            </div>
+            <!-- Styleswitcher End -->
+            <!-- Top Bar Text Start -->
+            <!--  时间显示-->
+            <p class="text">Now Times: <label id="show1">显示时间的位置</label></p>
+            <!-- Top Bar Text End -->
+        </div>
+        <div class="clear"></div>
+        <!-- Toggle Show Hide Div Start -->
+        <div id="jason" class="topwidgets">
+            <div class="inner">
+            </div>
+            <!-- Widget Placeholder End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Top Bar End -->
+<!-- Header Start -->
+<div id="header">
+    <div class="rays">
+        <div class="inner">
+            <!-- Logo Start -->
+            <div class="logo">
+                <a href="index.jsp"><img src="images/index_picture/fujitsu_log6.png" alt=""/></a>
+            </div>
+            <!-- Logo End -->
+            <div class="right">
+                <!-- Navigation Start -->
+                <div class="navigation">
+                    <div id="smoothmenu1" class="ddsmoothmenu">
+                        <ul>
+                            <li><a href="index_lms.htm">首页</a></li>
+                            <li><a href="Reader.htm">读者管理</a></li>
+                            <li><a href="#">书刊管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Book_add.htm">图书入库</a></li>
+                                    <li><a href="Book.htm">分类管理</a></li>
+                                    <li><a href="Book_buy.htm">书刊购买</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">统计报表</a>
+                                <ul class="backcolr">
+                                    <li><a href="Report_list.htm">统计表格</a></li>
+                                    <li><a href="#">统计图形</a>
+                                        <ul>
+                                            <li><a href="histogram.htm">柱状图</a></li>
+                                            <li><a href="sector_diagram.htm">扇形图</a></li>
+                                        </ul>
+
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="current-menu-item"><a href="#">借阅管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Borrow_authority.htm">借阅权限</a></li>
+                                    <li><a href="Borrow_return.htm">借书/还书</a></li>
+                                    <li><a href="Borrow_log.htm">借阅记录</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">系统设置</a>
+                                <ul class="backcolr">
+                                    <li><a href="System_metadata.htm">元数据设置</a></li>
+                                    <li><a href="#">账号密码管理</a>
+                                        <ul>
+                                            <li><a href="Manager_password.htm">管理员密码维护</a></li>
+                                            <li><a href="User_password.htm">读者端密码维护</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="Sysrem_message.htm">消息推送</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End --></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <!-- Navigation End -->
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</div>
+</frame>
+<div id="bread-crumb">
+    <div class="inner">
+        <ul>
+            <li><a href="index_lms.htm">Home</a></li>
+            <li><a href="#">Borrow</a></li>
+            <li><a href="Borrow_return.htm">Borrow Books /Return Books /Renew Books </a></li>
+        </ul
+        <div class="clear"></div>
+    </div>
+</div>
+<form name="form1" method="post" action="Borrow_return.htm?action=search">
+    <div id="contentsec">
+        <div class="inner">
+            <!-- Fullwidth Box Start -->
+            <div class="fullwidth box left">
+                <div class="widgets-area-conts">
+                    <!-- Widget PlaceHolder Start -->
+                    <div class="widget-placeholder">
+                        <!-- Text Widget Start -->
+                        <h3 class="widget-head-border colr">书刊信息</h3>
+
+                        <div class="cont-form-in">
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>书刊条码</h5>
+
+                                    <p>Required</p>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text" id="barcode"/>
+
+                                    <div class="inputicon"><img src="images/name-icon.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>书刊名</h5>
+
+                                    <p>Required</p>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text" id="bookName"/>
+
+                                    <div class="inputicon"><img src="images/mail-icon.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>ISBN</h5>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text" id="isbn"/>
+
+                                    <div class="inputicon"><img src="images/address.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>馆藏类型</h5>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text" id="bookType"/>
+
+                                    <div class="inputicon"><img src="images/address.png" alt=""/></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Text Widget End -->
+                    </div>
+                    <!-- Widget PlaceHolder End -->
+                    <!-- Widget PlaceHolder Start -->
+                    <div class="widget-placeholder">
+                        <!-- Text Widget Start -->
+                        <h3 class="widget-head-border colr">读者信息</h3>
+
+                        <div class="cont-form-in">
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>读者工号</h5>
+
+                                    <p>Required</p>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text" id="userNo"/>
+
+                                    <div class="inputicon"><img src="images/name-icon.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>读者姓名</h5>
+
+                                    <p>Required</p>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text"/>
+
+                                    <div class="inputicon" id="userName"><img src="images/mail-icon.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>读者部门</h5>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text"/>
+
+                                    <div class="inputicon" id="deptName"><img src="images/address.png" alt=""/></div>
+                                </li>
+                            </ul>
+                            <ul class="form-short">
+                                <li class="txt">
+                                    <h5>读者邮件</h5>
+                                </li>
+                                <li class="inputbar">
+                                    <input type="text"/>
+
+                                    <div class="inputicon" id="userMail"><img src="images/address.png" alt=""/></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Text Widget End -->
+                    </div>
+                    <!-- Widget PlaceHolder End -->
+
+                    <!-- Widget PlaceHolder Start -->
+                    <div class="widget-placeholder">
+                        <!-- Donation Widget Start -->
+                        <div class="widget donation">
+                            <!-- Text Widget Start -->
+                            <div backgroud="images/function_button.png">
+                                <ul>&nbsp;
+                                    <ul>
+                                        <ul>&nbsp;
+                                            <ul>
+                                                <ul>&nbsp;
+                                                    <ul>
+                                                        <ul>&nbsp;
+                                                            <ul>
+                            </div>
+                            <div>
+
+
+                                <ul>
+                                    <li style="float:right;">
+                                        <a style="display:block;">
+                                            <img src="images/select_button.png" width="85%"></img></a>
+                                        <a href="#借书" id="borrowBookImg" style="display:block;"><img
+                                                src="images/borrow_button.png" width="85%"></img></a>
+                                        <a href="#还书" id="returnBookImg" style="display:block;"><img
+                                                src="images/return_button.png" width="85%"></img></a>
+                                        <a href="#续借" id="renewBookImg" style="display:block;"><img
+                                                src="images/renew_button.png" height="95%" width="85%"></img></a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <!-- Text Widget End -->
+                    </div>
+                    <!-- Widget PlaceHolder End -->
+                </div>
+            </div>
+
+            <!-- Fullwidth Box End -->
+        </div>
+    </div>
+</form>
+
+<div id="contentsec">
+    <!-- Footer Start -->
+    <frame>
+
+    <div id="footer">
+        <div class="footer-rays">
+            <div class="inner">
+                <!-- Footer Logo - Navigation - Copyrights Start -->
+                <div class="foot-navi-coopyrights">
+                    <div class="footlogo-nav">
+                        <!-- Footer Logo Start -->
+                        <div class="footlogo">
+                            <a href="#"><img src="images/index_picture/fujitsu_log5.png" alt=""/></a>
+                        </div>
+                        <!-- Footer Logo End -->
+                        <div class="footnav">
+                            <ul>
+                                <li><a href="#">首页</a></li>
+                                <li><a href="#">读者管理</a></li>
+                                <li><a href="#">书刊管理</a></li>
+                                <li><a href="#">统计报表</a></li>
+                                <li><a href="#">积分管理</a></li>
+                                <li><a href="#">系统设置</a></li>
+                            </ul>
+                        </div>
+                        <!-- Footer Navigation End -->
+                    </div>
+                </div>
+                <!-- Footer Logo - Navigation - Copyrights End -->
+                <!-- Follow Us - Go to Top Start -->
+                <div class="followus">
+                    <!-- Go to Top Start -->
+                    <div class="gotop">
+                        <a href="#top">&nbsp;</a>
+                        <span>Back to Top</span>
+                    </div>
+                    <!-- Go to Top End -->
+                </div>
+                <!-- Follow Us - Go to Top End -->
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+</div>
+</frame>
+
+<!-- Wrapper End -->
+</frameset>
+</body>
+</html>

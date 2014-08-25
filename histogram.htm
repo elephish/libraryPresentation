@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Libary</title>
+    <!--// Stylesheets //-->
+    <link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
+    <!--// Javascripts //-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/styleswitch.js"></script>
+    <script type="text/javascript" src="js/animatedcollapse.js"></script>
+    <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+    <script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
+    <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <!-- ECharts单文件引入 -->
+    <script type="text/javascript" src="js/echarts-plain.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script language="javascript" type="text/javascript">
+        <!--
+        //获得当前时间,刻度为一千分一秒
+        var initializationTime = (new Date()).getTime();
+        function showLeftTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
+//一秒刷新一次显示时间
+            var timeID = setTimeout(showLeftTime, 1000);
+        }
+        //-->
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var bookData = [];
+            var seriesData = [];
+            // countBorrowRecord
+            $.getJSON(remoteIP + '/countBorrowRecord', function (json, textStatus) {
+                $.each(json, function (index, val) {
+                    var singleBook = val;
+                    bookData.push(singleBook.bookName);
+                    seriesData.push(singleBook.borrowedNum)
+                });
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = echarts.init(document.getElementById('main'));
+
+                var option = {
+                    title: {
+                        text: '10大最受欢迎书刊',
+                        subtext: '可能没有10本？'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        // data: ['蒸发量']
+                        data: ['借阅量']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                            data: bookData
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '借阅量',
+                            type: 'bar',
+                            // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                            data: seriesData,
+                            markPoint: {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            });
+
+        });
+    </script>
+</head>
+
+<body onload="showLeftTime()">
+<!-- Wrapper Start -->
+<div id="outer_wrapper">
+    <!-- Top Bar Start -->
+    <div id="top-bar" class="backcolr">
+        <div class="inner">
+            <!-- Styleswitcher Start -->
+            <div class="styles">
+                <ul>
+                    <li><h6 class="white">Select Color Schemes:</h6></li>
+                    <li><a href="index.html@style=style1" rel="styles1" class="styleswitch red">&nbsp;</a></li>
+                    <li><a href="index.html@style=style2" rel="styles2" class="styleswitch blue">&nbsp;</a></li>
+                    <li><a href="index.html@style=style3" rel="styles3" class="styleswitch gray">&nbsp;</a></li>
+                    <li><a href="index.html@style=style4" rel="styles4" class="styleswitch orange">&nbsp;</a></li>
+                    <li><a href="index.html@style=style5" rel="styles5" class="styleswitch green">&nbsp;</a></li>
+                    <li><a href="index.html@style=style6" rel="styles6" class="styleswitch orange-red">&nbsp;</a></li>
+                </ul>
+            </div>
+            <!-- Styleswitcher End -->
+            <!-- Top Bar Text Start -->
+            <!--  时间显示-->
+            <p class="text">Now Times: <label id="show1">显示时间的位置</label></p>
+            <!-- Top Bar Text End -->
+        </div>
+        <div class="clear"></div>
+        <!-- Toggle Show Hide Div Start -->
+        <div id="jason" class="topwidgets">
+            <div class="inner">
+            </div>
+            <!-- Widget Placeholder End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Top Bar End -->
+<!-- Header Start -->
+<div id="header">
+    <div class="rays">
+        <div class="inner">
+            <!-- Logo Start -->
+            <div class="logo">
+                <a href="index.jsp"><img src="images/index_picture/fujitsu_log6.png" alt=""/></a>
+            </div>
+            <!-- Logo End -->
+            <div class="right">
+                <!-- Navigation Start -->
+                <div class="navigation">
+                    <div id="smoothmenu1" class="ddsmoothmenu">
+                        <ul>
+                            <li><a href="index_lms.htm">首页</a></li>
+                            <li><a href="Reader.htm">读者管理</a></li>
+                            <li><a href="#">书刊管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Book_add.htm">图书入库</a></li>
+                                    <li><a href="Book.htm">分类管理</a></li>
+                                    <li><a href="Book_buy.htm">书刊购买</a></li>
+                                </ul>
+                            </li>
+                            <li class="current-menu-item"><a href="#">统计报表</a>
+                                <ul class="backcolr">
+                                    <li><a href="Report_list.htm">统计表格</a></li>
+                                    <li><a href="#">统计图形</a>
+                                        <ul>
+                                            <li><a href="histogram.htm">柱状图</a></li>
+                                            <li><a href="sector_diagram.htm">扇形图</a></li>
+                                        </ul>
+
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#">借阅管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Borrow_authority.htm">借阅权限</a></li>
+                                    <li><a href="Borrow_return.htm">借书/还书</a></li>
+                                    <li><a href="Borrow_log.htm">借阅记录</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">系统设置</a>
+                                <ul class="backcolr">
+                                    <li><a href="System_metadata.htm">元数据设置</a></li>
+                                    <li><a href="#">账号密码管理</a>
+                                        <ul>
+                                            <li><a href="Manager_password.htm">管理员密码维护</a></li>
+                                            <li><a href="User_password.htm">读者端密码维护</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="Sysrem_message.htm">消息推送</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End --></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <!-- Navigation End -->
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Header End -->
+<div id="bread-crumb">
+    <div class="inner">
+        <ul>
+            <li><a href="index_lms.htm">Home</a></li>
+            <li><a href="#">Report</a></li>
+            <li><a href="Report_graph.htm">Sector Diagram </a></li>
+        </ul
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:400px"></div>
+<!-- Footer Start -->
+
+<div id="footer">
+    <div class="footer-rays">
+        <div class="inner">
+            <!-- Footer Logo - Navigation - Copyrights Start -->
+            <div class="foot-navi-coopyrights">
+                <div class="footlogo-nav">
+                    <!-- Footer Logo Start -->
+                    <div class="footlogo">
+                        <a href="#"><img src="images/index_picture/fujitsu_log5.png" alt=""/></a>
+                    </div>
+                    <!-- Footer Logo End -->
+                    <div class="footnav">
+                        <ul>
+                            <li><a href="#">首页</a></li>
+                            <li><a href="#">读者管理</a></li>
+                            <li><a href="#">书刊管理</a></li>
+                            <li><a href="#">统计报表</a></li>
+                            <li><a href="#">积分管理</a></li>
+                            <li><a href="#">系统设置</a></li>
+                        </ul>
+                    </div>
+                    <!-- Footer Navigation End -->
+                </div>
+            </div>
+            <!-- Footer Logo - Navigation - Copyrights End -->
+            <!-- Follow Us - Go to Top Start -->
+            <div class="followus">
+                <!-- Go to Top Start -->
+                <div class="gotop">
+                    <a href="#top">&nbsp;</a>
+                    <span>Back to Top</span>
+                </div>
+                <!-- Go to Top End -->
+            </div>
+            <!-- Follow Us - Go to Top End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer End -->
+</div>
+<!-- Wrapper End -->
+
+</body>
+</html>

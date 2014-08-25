@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <title>Libary</title>
+    <!--// Stylesheets //-->
+    <link href="LMSG2_files/css.css" rel="stylesheet" type="text/css"/>
+    <link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
+    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
+    <!--// Javascripts //-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/styleswitch.js"></script>
+    <script type="text/javascript" src="js/animatedcollapse.js"></script>
+    <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+    <script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
+    <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script language="javascript" type="text/javascript">
+        <!--
+        //获得当前时间,刻度为一千分一秒
+        var initializationTime = (new Date()).getTime();
+        function showLeftTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
+//一秒刷新一次显示时间
+            var timeID = setTimeout(showLeftTime, 1000);
+        }
+        //-->
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //页面初始化
+            $.getJSON(remoteIP + '/listUser', function (json, textStatus) {
+                fillTable(json);
+                //{"limitBookNo":5,"userNo":"000000","userSex":"xx","userName":"admin","borrowedNo":0,"authorityName":"????"}
+            });
+
+            //点击排序图标
+            var sortIcons = $("div#readers ul:first li a");
+            var sortByNoIcon = sortIcons.first();
+            sortByNoIcon.click(function (event) {
+                clearTable();
+                $.getJSON(remoteIP + '/listUser?column=user_no&condition=desc', function (json, textStatus) {
+                    fillTable(json);
+                });
+            });
+
+            //点击检索按键
+            $("#searchButton").click(function (event) {
+                clearTable();
+                $.getJSON(remoteIP + '/searchWithKey', {key: $("#searchCondition").val()}, function (json, textStatus) {
+                    fillTable(json);
+                });
+            });
+            //检索框回车事件
+            $("#searchCondition").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    $("#searchButton").click();
+                }
+                ;
+            });
+            //重置按键
+            $("#resetButton").click(function (event) {
+                $("#searchCondition").val('').focus();
+            });
+
+
+            /*
+             功能函数。
+             清空表格内容。
+             根据json填充表格。
+             */
+            function clearTable() {
+                $("#readers ul:gt(0)").remove();
+            }
+
+            function fillTable(json) {
+                for (var i = 0; i < json.length; i++) {
+                    var reader = json[i];
+                    $("#readers").append(
+                            $("<ul class=\"dates\">")
+                                    .append($("<li style=\"width:20%;\">").text(reader.userNo))
+                                    .append($("<li style=\"width:15%;\">").text(reader.userName))
+                                    .append($("<li style=\"width:15%;\">").text(reader.userSex))
+                                    .append($("<li style=\"width:20%;\">").text(reader.authorityName))
+                                    .append($("<li style=\"width:15%;\">").text(reader.limitBookNo))
+                                    .append($("<li style=\"width:15%;\">").text(reader.borrowedNo))
+                    )
+                }
+                ;
+            }
+        });
+
+    </script>
+
+
+</head>
+<body onload="showLeftTime()">
+<frameset rows="20%,60%,*">
+<!-- Wrapper Start -->
+<frame>
+<div id="outer_wrapper">
+    <!-- Top Bar Start -->
+    <div id="top-bar" class="backcolr">
+        <div class="inner">
+            <!-- Styleswitcher Start -->
+            <div class="styles">
+                <ul>
+                    <li><h6 class="white">Select Color Schemes:</h6></li>
+                    <li><a href="index.html@style=style1" rel="styles1" class="styleswitch red">&nbsp;</a></li>
+                    <li><a href="index.html@style=style2" rel="styles2" class="styleswitch blue">&nbsp;</a></li>
+                    <li><a href="index.html@style=style3" rel="styles3" class="styleswitch gray">&nbsp;</a></li>
+                    <li><a href="index.html@style=style4" rel="styles4" class="styleswitch orange">&nbsp;</a></li>
+                    <li><a href="index.html@style=style5" rel="styles5" class="styleswitch green">&nbsp;</a></li>
+                    <li><a href="index.html@style=style6" rel="styles6" class="styleswitch orange-red">&nbsp;</a></li>
+                </ul>
+            </div>
+            <!-- Styleswitcher End -->
+            <!-- Top Bar Text Start -->
+            <!--  时间显示-->
+            <p class="text">Now Times: <label id="show1">显示时间的位置</label></p>
+            <!-- Top Bar Text End -->
+        </div>
+        <div class="clear"></div>
+        <!-- Toggle Show Hide Div Start -->
+        <div id="jason" class="topwidgets">
+            <div class="inner">
+            </div>
+            <!-- Widget Placeholder End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Top Bar End -->
+<!-- Header Start -->
+<div id="header">
+    <div class="rays">
+        <div class="inner">
+            <!-- Logo Start -->
+            <div class="logo">
+                <a href="index.jsp"><img src="images/index_picture/fujitsu_log6.png" alt=""/></a>
+            </div>
+            <!-- Logo End -->
+            <div class="right">
+                <!-- Navigation Start -->
+                <div class="navigation">
+                    <div id="smoothmenu1" class="ddsmoothmenu">
+                        <ul>
+                            <li><a href="index_lms.htm">首页</a></li>
+                            <li class="current-menu-item"><a href="Reader.htm">读者管理</a></li>
+                            <li><a href="#">书刊管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Book_add.htm">图书入库</a></li>
+                                    <li><a href="Book.htm">分类管理</a></li>
+                                    <li><a href="Book_buy.htm">书刊购买</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">统计报表</a>
+                                <ul class="backcolr">
+                                    <li><a href="Report_list.htm">统计表格</a></li>
+                                    <li><a href="#">统计图形</a></li>
+                                    <ul>
+                                        <li><a href="histogram.htm">柱状图</a></li>
+                                        <li><a href="sector_diagram.htm">扇形图</a></li>
+                                    </ul>
+
+                                </ul>
+                            </li>
+                            <li><a href="#">借阅管理</a>
+                                <ul class="backcolr">
+                                    <li><a href="Borrow_authority.htm">借阅权限</a></li>
+                                    <li><a href="Borrow_return.htm">借书/还书</a></li>
+                                    <li><a href="Borrow_log.htm">借阅记录</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">系统设置</a>
+                                <ul class="backcolr">
+                                    <li><a href="System_metadata.htm">元数据设置</a></li>
+                                    <li><a href="#">账号密码管理</a>
+                                        <ul>
+                                            <li><a href="Manager_password.htm">管理员密码维护</a></li>
+                                            <li><a href="User_password.htm">读者端密码维护</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="Sysrem_message.htm">消息推送</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End --></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <!-- Navigation End -->
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</div>
+</frame>
+<!-- Header End -->
+<frame>
+<div id="bread-crumb">
+    <div class="inner">
+        <ul>
+            <li><a href="index_lms.htm">Home</a></li>
+            <li><a href="Reader.htm">Reader</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="biaoge">
+    <body topmargin="0">
+    <!-- <form name="form1" method="post" action=""  > -->
+    <table>
+        <tr>
+            <h3 class="widget-head-border colr">检索条件</h3>
+        </tr>
+        <tr>
+            <td><input name="searchCondition" id="searchCondition" size="100" maxlength="100" height="50" type="text">
+                <button id="searchButton" name="searchButton">检索</button>
+                <button id="resetButton" name="resetButton">重置</button>
+            </td>
+        </tr>
+    </table>
+    <!-- </form> -->
+    <br>
+    <table>
+        <div class="widget-placeholder">
+            <div class="widget wp-calendar">
+                <div class="calendar">
+                    <ul class="months backcolr">
+                        <h3 class="white">查询结果</h3>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- Calendar Widget Start -->
+<div class="widget wp-calendar">
+    <div class="calendar" id="readers">
+        <ul class="days">
+            <li style="width:20%;" id="sortByNo">员工号
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+            <li style="width:15%;" id="sortByName">姓名
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+            <li style="width:15%;" id="sortBySex">性别
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+            <li style="width:20%;" id="sortByDepart">部门
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+            <li style="width:15%;" id="sortByLimitNo">可借册数
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+            <li style="width:15%;" id="sortByBorrowedNo">已借册数
+                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+        </ul>
+        <!--     <ul class="dates">
+               <li>016018</li>
+                <li><div align="center">王昭羽</div></li>
+                <li style="width:5%;"><div align="center">女</div></li>
+                <li style="width:10%;"><div align="center">1-2</div></li>
+                <li><div align="center">软件开发人员</div></li>
+               <li style="width:27.5%;"><div align="center">wangzy.fnst@cn.fujitsu.com</div></li>
+               <li style="width:10%;"><div align="center">可借</div></li>
+              <li style="width:10%;"><div align="center">4</div></li>
+        </ul> -->
+    </div>
+</div>
+</div>
+</div>
+
+
+<tr>
+    <td colspan="9" height="25">
+        <div align="center">记录总条数：8 当前页1/1总页数 <a href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0"
+                                                 class="red">首页</a> <a
+                href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0" class="red">上一页</a> <a
+                href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0" class="red">下一页</a> <a
+                href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0" class="red">末页</a></div>
+    </td>
+</tr>
+</table>
+</div >
+</frame>
+<!-- Footer Start -->
+<frame>
+
+<div id="footer">
+    <div class="footer-rays">
+        <div class="inner">
+            <!-- Footer Logo - Navigation - Copyrights Start -->
+            <div class="foot-navi-coopyrights">
+                <div class="footlogo-nav">
+                    <!-- Footer Logo Start -->
+                    <div class="footlogo">
+                        <a href="#"><img src="images/index_picture/fujitsu_log5.png" alt=""/></a>
+                    </div>
+                    <!-- Footer Logo End -->
+                    <div class="footnav">
+                        <ul>
+                            <li><a href="#">首页</a></li>
+                            <li><a href="#">读者管理</a></li>
+                            <li><a href="#">书刊管理</a></li>
+                            <li><a href="#">统计报表</a></li>
+                            <li><a href="#">积分管理</a></li>
+                            <li><a href="#">系统设置</a></li>
+                        </ul>
+                    </div>
+                    <!-- Footer Navigation End -->
+                </div>
+            </div>
+            <!-- Footer Logo - Navigation - Copyrights End -->
+            <!-- Follow Us - Go to Top Start -->
+            <div class="followus">
+                <!-- Go to Top Start -->
+                <div class="gotop">
+                    <a href="#top">&nbsp;</a>
+                    <span>Back to Top</span>
+                </div>
+                <!-- Go to Top End -->
+            </div>
+            <!-- Follow Us - Go to Top End -->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+</div>
+</frame>
+<!-- Wrapper End -->
+</frameset>
+</body>
+</html>
