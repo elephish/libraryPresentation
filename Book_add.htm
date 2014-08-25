@@ -75,7 +75,7 @@
                             pubName: $("#pubName").val(), pubPlace: $("#pubPlace").val(), price: $("#price").val(),
                             topic: $("#topic").val(), note: $("#note").val()},
                         function (json, textStatus) {
-                            alert(json);
+                            alert(json.success == undefined ? json.error : json.success);
                         });
             });
 
@@ -220,7 +220,7 @@
                 <h3 class="widget-head-border colr">图书入库</h3>
 
                 <div class="cont-form-in">
-                    <ul class="form-short">
+                    <!-- <ul class="form-short">
                         <li class="txt">
                             <h5>图片</h5>
 
@@ -236,7 +236,7 @@
                                  style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);">
                             </div>
                         </li>
-                    </ul>
+                    </ul> -->
                     <ul class="form-short">
                         <li class="txt">
                             <h5>ISBN</h5>

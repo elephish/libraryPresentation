@@ -38,7 +38,7 @@
             var minutes = now.getMinutes();
             var seconds = now.getSeconds();
             document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
-//一秒刷新一次显示时间
+            //一秒刷新一次显示时间
             var timeID = setTimeout(showLeftTime, 1000);
         }
         //-->
@@ -54,12 +54,14 @@
 
             //点击排序图标
             var sortIcons = $("div#readers ul:first li a");
-            var sortByNoIcon = sortIcons.first();
-            sortByNoIcon.click(function (event) {
+            sortIcons.click(function(event) {
+                var singleIcon = $(this);
+                var condition = singleIcon.parents("li").find(':hidden').val();
                 clearTable();
-                $.getJSON(remoteIP + '/listUser?column=user_no&condition=desc', function (json, textStatus) {
+                $.getJSON(remoteIP + '/listUser?column=' + condition + '&condition=desc', function (json, textStatus) {
                     fillTable(json);
                 });
+
             });
 
             //点击检索按键
@@ -259,17 +261,26 @@
 <div class="widget wp-calendar">
     <div class="calendar" id="readers">
         <ul class="days">
+        <!-- {"limitBookNo":5,"userNo":"000000","userSex":"xx","userName":"admin","borrowedNo":0,"authorityName":"????"} -->
             <li style="width:20%;" id="sortByNo">员工号
+                <input type="hidden" value="user_No"/>
                 <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
             <li style="width:15%;" id="sortByName">姓名
+                <input type="hidden" value="user_Name"/>
                 <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
             <li style="width:15%;" id="sortBySex">性别
+                <input type="hidden" value="user_Sex"/>
                 <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
             <li style="width:20%;" id="sortByDepart">部门
-                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+                <input type="hidden" value="authority_Name"/>
+                <!-- <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a> -->
+            </li>
             <li style="width:15%;" id="sortByLimitNo">可借册数
-                <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
+                <input type="hidden" value="limit_BookNo"/>
+                <!-- <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a> -->
+            </li>
             <li style="width:15%;" id="sortByBorrowedNo">已借册数
+                <input type="hidden" value="borrowed_No"/>
                 <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
         </ul>
         <!--     <ul class="dates">

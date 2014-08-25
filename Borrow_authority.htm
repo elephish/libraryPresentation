@@ -42,6 +42,50 @@
         }
         //-->
     </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        //clone“操作”的li
+        var actionsLi = $("#actionsLi").clone();
+
+        //    
+        $.getJSON(remoteIP+'/jsp/listAuthority', function(json, textStatus) {
+            clearTable();
+            fillTable(json);
+        });
+
+        //点击"修改"按键
+        $(".modButton").live('click', function (event) {
+            // alert($(this).parents('ul').find('li.bookIsbnLi').text());
+            location.href = "Authority_Update.htm?id=" + $(this).parents('ul').find(':hidden').val();
+        });
+
+        /*
+         功能函数。
+         清空表格内容。
+         根据json填充表格。
+         */
+        function clearTable() {
+            $("#authoritiesDiv ul:gt(0)").remove();
+        }
+
+        function fillTable(json) {
+            for (var i = 0; i < json.length; i++) {
+                var singleAuthority = json[i];
+                $("#authoritiesDiv").append(
+                    $("<ul class=\"dates\">")
+                            .append($("<input type='hidden' value=" + singleAuthority.id + ">"))
+                            .append($("<li>").text(singleAuthority.authorityName))
+                            .append($("<li>").text(singleAuthority.limitBookNo))
+                            .append($("<li>").text(singleAuthority.limitDayNo))
+                            .append($("<li>").text(singleAuthority.reloadTimes))
+                            .append($("<li>").text(singleAuthority.reloadDays))
+                            .append(actionsLi.clone())
+                )
+            }
+            ;
+        }
+    });
+    </script>
 </head>
 <body onload="showLeftTime()">
 <frameset rows="20%,60%,*">
@@ -184,86 +228,27 @@
 </div>
 <!-- Calendar Widget Start -->
 <div class="widget wp-authority">
-    <div class="authority">
+    <div class="authority" id="authoritiesDiv">
         <ul class="dates">
             <li>读者类别名</li>
             <li>可借书数</li>
             <li>可借天数</li>
             <li>可续借次数</li>
             <li>每次续借天数</li>
-            <li>操作</li>
+            <li>操作 </li>
         </ul>
-        <ul class="dates">
-            <li>正式员工</li>
-            <li>5</li>
-            <li>30</li>
-            <li>1</li>
-            <li>30</li>
-            <li>
-                <button>操作</button>
+        <ul>
+            <li>读者类别名</li>
+            <li>可借书数</li>
+            <li>可借天数</li>
+            <li>可续借次数</li>
+            <li>每次续借天数</li>
+            <li id="actionsLi">
+                <div align="center">
+                    <button class="modButton">修改</button>
+                </div>
             </li>
         </ul>
-        <ul class="dates">
-            <li>外注</li>
-            <li>2</li>
-            <li>30</li>
-            <li>1</li>
-            <li>30</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-        <ul class="dates">
-            <li>离职人员</li>
-            <li>0</li>
-            <li>0</li>
-            <li>0</li>
-            <li>0</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-        <ul class="dates">
-            <li>实习生</li>
-            <li>2</li>
-            <li>30</li>
-            <li>1</li>
-            <li>30</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-        <ul class="dates">
-            <li>临时人员</li>
-            <li>0</li>
-            <li>0</li>
-            <li>0</li>
-            <li>0</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-        <ul class="dates">
-            <li>日本老师</li>
-            <li>13</li>
-            <li>30</li>
-            <li>1</li>
-            <li>30</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-        <ul class="dates">
-            <li>江苏富士通</li>
-            <li>2</li>
-            <li>30</li>
-            <li>1</li>
-            <li>30</li>
-            <li>
-                <button>操作</button>
-            </li>
-        </ul>
-
     </div>
 </div>
 </div>

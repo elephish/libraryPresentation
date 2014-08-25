@@ -78,115 +78,105 @@
         function checkBookStatus() {
             //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
             $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
+                function (json, textStatus) {
+                    isValid = json.isValid;
+                    isBorrowed = json.isBorrowed;
 
 
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-                    });
+                    if (isValid == 0) {  //不存在
+                        alert("此书不存在");
+                    }
+                });
         }
 
         //右侧图片上的三个链接
         $("#borrowBookImg").click(function (event) {
             $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
+                function (json, textStatus) {
+                    isValid = json.isValid;
+                    isBorrowed = json.isBorrowed;
 
 
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-                        if ($.trim($("#isbn").val()) == '' || $.trim($("#userNo").val()) === '') {
-                            alert('请录入书刊和员工信息');
-                            return;
-                        }
-                        if (isValid == 0) {  //不存在
-                            alert("书刊不存在");
-                            return;
-                        }
-                        if (isBorrowed == 1) {
-                            alert("书刊已借出");
-                            return;
-                        }
-                        if ($.inArray(readerKind, noAuthorityReaderKinds) != -1) {
-                            alert("该员工没有借书资格");
-                            return;
-                        }
-                        if ($("#isbn").val().substr(0, 5) == japaneseBookISBN && $.inArray(readerKind, noAuthorityReaderKindsForJapaneseBook) != -1) {
-                            alert("该员工没有借日文原版书资格");
-                            return;
-                        }
-                        if (borrowedNo >= limitBookNo) {
-                            alert("该员工可借" + limitBookNo + "本，已借" + borrowedNo + "本，无法再借");
-                            return;
-                        }
-                        $.getJSON(remoteIP + '/managerBorrowBook',
-                                // {userNo: '009021', isbn:'978-7-115-14554-3', serialNo:'001'},
-                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
-                                function (json, textStatus) {
-                                    alert(json.success === undefined ? json.error : json.success);
-                                });
-                    });
+                    if (isValid == 0) {  //不存在
+                        alert("此书不存在");
+                    }
+                    if ($.trim($("#isbn").val()) == '' || $.trim($("#userNo").val()) === '') {
+                        alert('请录入书刊和员工信息');
+                        return;
+                    }
+                    if (isValid == 0) {  //不存在
+                        alert("书刊不存在");
+                        return;
+                    }
+                    if (isBorrowed == 1) {
+                        alert("书刊已借出");
+                        return;
+                    }
+                    if ($.inArray(readerKind, noAuthorityReaderKinds) != -1) {
+                        alert("该员工没有借书资格");
+                        return;
+                    }
+                    if ($("#isbn").val().substr(0, 5) == japaneseBookISBN && $.inArray(readerKind, noAuthorityReaderKindsForJapaneseBook) != -1) {
+                        alert("该员工没有借日文原版书资格");
+                        return;
+                    }
+                    if (borrowedNo >= limitBookNo) {
+                        alert("该员工可借" + limitBookNo + "本，已借" + borrowedNo + "本，无法再借");
+                        return;
+                    }
+                    $.getJSON(remoteIP + '/managerBorrowBook',
+                            // {userNo: '009021', isbn:'978-7-115-14554-3', serialNo:'001'},
+                            {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                            function (json, textStatus) {
+                                alert(json.success === undefined ? json.error : json.success);
+                            });
+                });
 
         });
         $("#returnBookImg").click(function (event) {
             $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
+                function (json, textStatus) {
+                    isValid = json.isValid;
+                    isBorrowed = json.isBorrowed;
 
 
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-                        if (isValid == 0) {  //不存在
-                            alert("书刊不存在");
-                            return;
-                        }
-                        if (isBorrowed == 0) {
-                            alert("书刊未被借出，无法归还");
-                            return;
-                        }
-                        $.getJSON(remoteIP + '/managerReturnBook',
-                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
-                                // {userNo: '009021', isbn: '978-7-115-14554-3', serialNo: '001'},
-                                function (json, textStatus) {
-                                    alert(json.success === undefined ? json.error : json.success);
-                                });
-                    });
+                    if (isValid == 0) {  //不存在
+                        alert("此书不存在");
+                    }
+                    if (isBorrowed == 0) {
+                        alert("书刊未被借出，无法归还");
+                        return;
+                    }
+                    $.getJSON(remoteIP + '/managerReturnBook',
+                            {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                            // {userNo: '009021', isbn: '978-7-115-14554-3', serialNo: '001'},
+                            function (json, textStatus) {
+                                alert(json.success === undefined ? json.error : json.success);
+                            });
+                });
 
 
         });
         $("#renewBookImg").click(function (event) {
             $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
+                function (json, textStatus) {
+                    isValid = json.isValid;
+                    isBorrowed = json.isBorrowed;
 
-
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-
-                        if (isValid == 0) {  //不存在
-                            alert("书刊不存在");
-                            return;
-                        }
-                        if (isBorrowed == 0) {
-                            alert("书刊未被借出，无法续借");
-                            return;
-                        }
-                        $.getJSON(remoteIP + '/managerRenewBook',
-                                {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
-                                // {userNo: '009021', isbn: $("#isbn").val(), serialNo: '001'},
-                                function (json, textStatus) {
-                                    alert(json.success === undefined ? json.error : json.success);
-                                });
-                    });
+                    if (isValid == 0) {  //不存在
+                        alert("此书不存在");
+                    }
+                    if (isBorrowed == 0) {
+                        alert("书刊未被借出，无法续借");
+                        return;
+                    }
+                    $.getJSON(remoteIP + '/managerRenewBook',
+                            {userNo: $.trim($("#userNo").val()), isbn: $("#isbn").val(), serialNo: '001'},
+                            // {userNo: '009021', isbn: $("#isbn").val(), serialNo: '001'},
+                            function (json, textStatus) {
+                                alert(json.success === undefined ? json.error : json.success);
+                            });
+                });
 
         });
 
