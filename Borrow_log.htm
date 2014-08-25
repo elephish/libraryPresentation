@@ -49,12 +49,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             // $('.datepicker').datepicker();  //TODO 有BUG
-            $("#begintime").datepicker( $.datepicker.regional[ "zh-CN" ] );
-            $("#beginTimeButton").click(function(event) {
+            $("#begintime").datepicker($.datepicker.regional[ "zh-CN" ]);
+            $("#beginTimeButton").click(function (event) {
                 $("#begintime").focus();
             });
-            $("#endtime").datepicker( $.datepicker.regional[ "zh-CN" ] );
-            $("#endTimeButton").click(function(event) {
+            $("#endtime").datepicker($.datepicker.regional[ "zh-CN" ]);
+            $("#endTimeButton").click(function (event) {
                 $("#endtime").focus();
             });
 
@@ -73,7 +73,7 @@
             });
             $("#resetButton").click(function (event) {
                 $("#begintime").add($("#endtime")).val('');
-               $("#searchContent").val('').focus();
+                $("#searchContent").val('').focus();
             });
 
             /*
@@ -228,42 +228,42 @@
 <div class="biaoge">
     <body topmargin="0">
     <!-- <form name="form1"> -->
-        <div>
-            <!-- Calendar Widget Start -->
-            <h3 class="widget-head-border colr">检索条件</h3>
-            <li>
-                <td>
-                    <select name="borrow_date" id="" style="height:26px;width:90px;font-size:15px;">
-                        <!-- <option value="0">全部</option> -->
-                        <!-- <option value="1">借书日期</option> -->
-                        <option value="2">应还日期</option>
-                    </select>
-                </td>
-                &nbsp;&nbsp;
-                <td height="27">
+    <div>
+        <!-- Calendar Widget Start -->
+        <h3 class="widget-head-border colr">检索条件</h3>
+        <li>
+            <td>
+                <select name="borrow_date" id="" style="height:26px;width:90px;font-size:15px;">
+                    <!-- <option value="0">全部</option> -->
+                    <!-- <option value="1">借书日期</option> -->
+                    <option value="2">应还日期</option>
+                </select>
+            </td>
+            &nbsp;&nbsp;
+            <td height="27">
 
-                    <input name="begintime" type="text" id="begintime" maxlength="12" readonly value="">
-                        <button id="beginTimeButton">开始日期</button>
-                    --
-                    <input name="endtime" type="text" id="endtime" maxlength="12" readonly value="">
-                        <button id="endTimeButton">终了日期</button>
-                </td>
+                <input name="begintime" type="text" id="begintime" maxlength="12" readonly value="">
+                <button id="beginTimeButton">开始日期</button>
+                --
+                <input name="endtime" type="text" id="endtime" maxlength="12" readonly value="">
+                <button id="endTimeButton">终了日期</button>
+            </td>
+        </li>
+        </ul>
+        <br>
+        <ul>
+            <li><input name="searchContent" id="searchContent" size="90" maxlength="90" height="50" type="text"
+                       style="font-size:20px;">
+                <!-- <input name="searchButon" id="searchButon" value="检索" type="button">
+                <input name="resetButton" id="resetButton" value="重置" type="button"> -->
+                <button id="searchButton" name="searchButton">检索</button>
+                <button id="resetButton" name="resetButton">重置</button>
             </li>
-            </ul>
-            <br>
-            <ul>
-                <li><input name="searchContent" id="searchContent" size="90" maxlength="90" height="50" type="text"
-                           style="font-size:20px;">
-                    <!-- <input name="searchButon" id="searchButon" value="检索" type="button">
-                    <input name="resetButton" id="resetButton" value="重置" type="button"> -->
-                    <button id="searchButton" name="searchButton">检索</button>
-                    <button id="resetButton" name="resetButton">重置</button>
-                </li>
-            </ul>
-            <ul>
-                <li></li>
-            </ul>
-        </div>
+        </ul>
+        <ul>
+            <li></li>
+        </ul>
+    </div>
     <!-- </form> -->
     <br>
     <table>
@@ -296,7 +296,7 @@
             <li>操作
                 <a href="#"> <img src="images/iconpng.png" height="10" width="10" border="0" align="absmiddle"></a></li>
         </ul>
-        
+
     </div>
 </div>
 

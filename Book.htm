@@ -67,22 +67,24 @@
             });
 
             //馆藏类型 {id,collection_type_name}
-            $.getJSON(remoteIP+'/selectCollectionTypeName', function (json, textStatus) {
+            $.getJSON(remoteIP + '/selectCollectionTypeName', function (json, textStatus) {
                 $.each(json, function (index, val) {
                     $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
                     if (index % 7 == 0 && index != 0) {
-                      $("#collectionTypeDiv").append($("<br>"));
-                    };
+                        $("#collectionTypeDiv").append($("<br>"));
+                    }
+                    ;
                 });
             });
 
             //分类号[{id:'', bookType:''}]
-            $.getJSON(remoteIP+'/selectBookType', function (json, textStatus) {
+            $.getJSON(remoteIP + '/selectBookType', function (json, textStatus) {
                 $.each(json, function (index, val) {
                     $("#bookTypeDiv").append("<input type='checkbox' value='" + val.bookType + "'></input>" + val.bookType + "&nbsp;&nbsp;&nbsp;&nbsp;");
                     if (index % 7 == 0 && index != 0) {
-                      $("#bookTypeDiv").append($("<br>"));
-                    };
+                        $("#bookTypeDiv").append($("<br>"));
+                    }
+                    ;
                 });
             });
 
@@ -254,8 +256,8 @@
                 <button id="resetButton" name="resetButton">重置</button>
             </li>
             <li>
-              <div id="collectionTypeDiv">馆藏类型:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
-              <div id="bookTypeDiv">分类号:&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div id="collectionTypeDiv">馆藏类型:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+                <div id="bookTypeDiv">分类号:&nbsp;&nbsp;&nbsp;&nbsp;</div>
             </li>
         </ul>
         <br>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
 </head>
 <body>
 <form action="login" method="post">
@@ -21,13 +21,13 @@
 <a href="listBooks">书本信息</a><br>
 
 <form action="searchWithKey" method="get">
-	<input type="text" name="key">
-	<input type="submit" value="检索员工">
+    <input type="text" name="key">
+    <input type="submit" value="检索员工">
 </form>
 
 <form action="searchBookWithKey" method="get">
-	<input type="text" name="key">
-	<input type="submit" value="检索书本">
+    <input type="text" name="key">
+    <input type="submit" value="检索书本">
 </form>
 
 <a href="managerHasBook?isbn=978-7-115-14554-3/TP&serialNo=003">managerHasBook</a><br>
@@ -39,8 +39,8 @@
 <a href="managerRenewBook?userNo=009021&isbn=978-7-115-14554-3/TP&serialNo=003">managerRenewBook</a><br>
 
 <form action="managerSearchBorrowRecordWithKey" method="get">
-	<input type="text" name="key">
-	<input type="submit" value="检索">
+    <input type="text" name="key">
+    <input type="submit" value="检索">
 </form>
 <a href="managerSearchBorrowRecordWithDate?date1=2014-07-01&date2=2014-09-01">managerSearchBookWithDate</a><br>
 <br>
@@ -88,21 +88,21 @@
 <a href="countBorrowRecord">##读者端##本月推荐（同管理员端的“统计借阅量前十”）</a><br/>
 <a href="sortWithKeys?collectionType0=技术类图书">##读者端##馆藏类型分类（馆藏类型为技术类图书）</a><br/>
 <br>
+
 <form action="searchBookWithKeyAndCollectionType" method="get">
-	<select name="collectionType">
-		<option>请选择</option>
-		<option value="语言学习类图书">语言学习类图书</option>
-		<option value="技术类图书">技术类图书</option>
-		<option value="图书">图书</option>
-		<option value="图书1">图书1</option>
-	</select>
-	<input type="text" name="key">
-	<input type="submit" value="在馆藏类型中检索书本">
+    <select name="collectionType">
+        <option>请选择</option>
+        <option value="语言学习类图书">语言学习类图书</option>
+        <option value="技术类图书">技术类图书</option>
+        <option value="图书">图书</option>
+        <option value="图书1">图书1</option>
+    </select>
+    <input type="text" name="key">
+    <input type="submit" value="在馆藏类型中检索书本">
 </form>
 <br/>
 <a href="orderBooksByBorrowedNum">##读者端##按借阅量排序书本信息</a><br/>
 <a href="getBorrowRecord?userNo=002015">getTenComments</a>
-
 
 
 ${authoritys }
@@ -118,8 +118,8 @@ ${borrowBook}
 
 ${returnBook}
 ${renewBook}
-${searchBorrowRecordWithKey} 
-${searchBorrowRecordWithDate} 
+${searchBorrowRecordWithKey}
+${searchBorrowRecordWithDate}
 
 ${maxRequireResult}
 ${overdueRemindResult}
@@ -152,18 +152,17 @@ ${booksWithKeyAndCollectionType }
 ${orderBooks }
 
 <table>
-	<tr>
-		<td>书本编号</td>
-		<td>删除</td>
-	</tr>
-	<c:forEach items="${serialNos}" var="serialNo">
-		<tr>
-			<td>${serialNo }</td>
-			<td><a href="deleteWithSerialNo?serialNo=${serialNo }">删除</a></td>	
-		</tr>
-	</c:forEach>
+    <tr>
+        <td>书本编号</td>
+        <td>删除</td>
+    </tr>
+    <c:forEach items="${serialNos}" var="serialNo">
+        <tr>
+            <td>${serialNo }</td>
+            <td><a href="deleteWithSerialNo?serialNo=${serialNo }">删除</a></td>
+        </tr>
+    </c:forEach>
 </table>
-
 
 
 <!--<table>

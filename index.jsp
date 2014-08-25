@@ -662,9 +662,11 @@
             </h3>
             <table width="70%" border="0" cellpadding="0" cellspacing="0" align="center" class=TableBorder>
                 <tr>
-                    <td><input name="project" id="searchContext" type="text" size="52" maxlength="75" style="font-size:20px;">
+                    <td><input name="project" id="searchContext" type="text" size="52" maxlength="75"
+                               style="font-size:20px;">
                     </td>
-                    <td><input type="submit" name="Submit" id="searchButton" style="font-size:15px;" value=" 检索一下 "></td>
+                    <td><input type="submit" name="Submit" id="searchButton" style="font-size:15px;" value=" 检索一下 ">
+                    </td>
                 </tr>
             </table>
             <table class="hovertable" id="searchBook" align="center">
@@ -861,6 +863,7 @@
         <div id="review">
             <!--1-->
             <div class="single-date-event"><span class="eve-pointer">&nbsp;</span>
+
                 <div class="single-event">
                     <div class="event-date"><img src="images/book_top10/langtuteng.jpg" width="80"
                                                  height="100"></div>
@@ -1028,9 +1031,9 @@
                                 </div>
                                 <div class="location">
                                     <div class="flip"><a id="click"
-                                            href="javascript:animatedcollapse.toggle('jason')"
-                                            class="togglebtn">我要评论</a></div>
-                                    <div class="panel" >
+                                                         href="javascript:animatedcollapse.toggle('jason')"
+                                                         class="togglebtn">我要评论</a></div>
+                                    <div class="panel">
                                         <form action="/example/html5/demo_form.asp" method="get">
                                             <div>
                                                 <ul>

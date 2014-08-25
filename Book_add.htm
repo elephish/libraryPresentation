@@ -80,16 +80,16 @@
             });
 
             //馆藏类型 {id,collection_type_name}
-            $.getJSON(remoteIP+'/selectCollectionTypeName', function (json, textStatus) {
+            $.getJSON(remoteIP + '/selectCollectionTypeName', function (json, textStatus) {
                 $.each(json, function (index, val) {
-                    $("#collectionType").append($("<option value='" + val.collectionTypeName + "'>" + val.collectionTypeName + "</option>") );
+                    $("#collectionType").append($("<option value='" + val.collectionTypeName + "'>" + val.collectionTypeName + "</option>"));
                 });
             });
 
             //分类号[{id:'', bookType:''}]
-            $.getJSON(remoteIP+'/selectBookType', function (json, textStatus) {
+            $.getJSON(remoteIP + '/selectBookType', function (json, textStatus) {
                 $.each(json, function (index, val) {
-                    $("#bookType").append($("<option value='" + val.bookType + "'>" + val.bookType + "</option>") );
+                    $("#bookType").append($("<option value='" + val.bookType + "'>" + val.bookType + "</option>"));
                 });
             });
 

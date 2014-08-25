@@ -3,94 +3,95 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Libary</title>
-    <!--// Stylesheets //-->
-    <link href="LMSG2_files/css.css" rel="stylesheet" type="text/css"/>
-    <link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
-    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
-    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
-    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
-    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
-    <link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
-    <!--// Javascripts //-->
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/styleswitch.js"></script>
-    <script type="text/javascript" src="js/animatedcollapse.js"></script>
-    <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-    <script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
-    <script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
-    <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
-    <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/variables.js"></script>
-    <script language="javascript" type="text/javascript">
-        <!--
-        //获得当前时间,刻度为一千分一秒
-        var initializationTime = (new Date()).getTime();
-        function showLeftTime() {
-            var now = new Date();
-            var year = now.getFullYear();
-            var month = now.getMonth() + 1;
-            var day = now.getDate();
-            var hours = now.getHours();
-            var minutes = now.getMinutes();
-            var seconds = now.getSeconds();
-            document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Libary</title>
+<!--// Stylesheets //-->
+<link href="LMSG2_files/css.css" rel="stylesheet" type="text/css"/>
+<link href="LMSG2_files/style.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="LMSG2_files/red.css" title="styles1" media="screen"/>
+<link rel="alternate stylesheet" type="text/css" href="LMSG2_files/blue.css" title="styles2" media="screen"/>
+<link rel="alternate stylesheet" type="text/css" href="LMSG2_files/gray.css" title="styles3" media="screen"/>
+<link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange.css" title="styles4" media="screen"/>
+<link rel="alternate stylesheet" type="text/css" href="LMSG2_files/green.css" title="styles5" media="screen"/>
+<link rel="alternate stylesheet" type="text/css" href="LMSG2_files/orange-red.css" title="styles6" media="screen"/>
+<!--// Javascripts //-->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/styleswitch.js"></script>
+<script type="text/javascript" src="js/animatedcollapse.js"></script>
+<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+<script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
+<script type="text/javascript" src="js/jquery.infinite-carousel.js"></script>
+<script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/variables.js"></script>
+<script language="javascript" type="text/javascript">
+    <!--
+    //获得当前时间,刻度为一千分一秒
+    var initializationTime = (new Date()).getTime();
+    function showLeftTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        document.all.show1.innerHTML = "" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "";
 //一秒刷新一次显示时间
-            var timeID = setTimeout(showLeftTime, 1000);
-        }
-        //-->
-    </script>
+        var timeID = setTimeout(showLeftTime, 1000);
+    }
+    //-->
+</script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(document).ready(function () {
-            //保存扫描时获取的各种信息
-            var serialNoFromScanner = '001';
-            var isValid = 0;
-            var isBorrowed = 0;
+    $(document).ready(function () {
+        //保存扫描时获取的各种信息
+        var serialNoFromScanner = '001';
+        var isValid = 0;
+        var isBorrowed = 0;
 
-            //保存员工的额外信息,将在输入员工号后刷新
-            var readerKind = 0;
-            var limitBookNo = 0;
-            var borrowedNo = 0;
+        //保存员工的额外信息,将在输入员工号后刷新
+        var readerKind = 0;
+        var limitBookNo = 0;
+        var borrowedNo = 0;
 
-            //书刊条码扫描
-            $("#isbn").blur(function (event) {
-                if ($.trim($(this).val()) == '') {
-                    return;
-                };
-                //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
-                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
-
-
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-                    });
-            });
-
-            function checkBookStatus(){
-                //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
-                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
-                    function (json, textStatus) {
-                        isValid = json.isValid;
-                        isBorrowed = json.isBorrowed;
-
-
-                        if (isValid == 0) {  //不存在
-                            alert("此书不存在");
-                        }
-                    });
+        //书刊条码扫描
+        $("#isbn").blur(function (event) {
+            if ($.trim($(this).val()) == '') {
+                return;
             }
+            ;
+            //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
+            $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
 
-            //右侧图片上的三个链接
-            $("#borrowBookImg").click(function (event) {
-                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                    });
+        });
+
+        function checkBookStatus() {
+            //看书籍是否存在以及已借未借信息，书籍不存在弹框显示。
+            $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+                    function (json, textStatus) {
+                        isValid = json.isValid;
+                        isBorrowed = json.isBorrowed;
+
+
+                        if (isValid == 0) {  //不存在
+                            alert("此书不存在");
+                        }
+                    });
+        }
+
+        //右侧图片上的三个链接
+        $("#borrowBookImg").click(function (event) {
+            $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
                     function (json, textStatus) {
                         isValid = json.isValid;
                         isBorrowed = json.isBorrowed;
@@ -131,9 +132,9 @@
                                 });
                     });
 
-            });
-            $("#returnBookImg").click(function (event) {
-                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+        });
+        $("#returnBookImg").click(function (event) {
+            $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
                     function (json, textStatus) {
                         isValid = json.isValid;
                         isBorrowed = json.isBorrowed;
@@ -159,9 +160,9 @@
                     });
 
 
-            });
-            $("#renewBookImg").click(function (event) {
-                $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
+        });
+        $("#renewBookImg").click(function (event) {
+            $.getJSON(remoteIP + '/managerHasBook', {isbn: $("#isbn").val(), serialNo: serialNoFromScanner},
                     function (json, textStatus) {
                         isValid = json.isValid;
                         isBorrowed = json.isBorrowed;
@@ -186,34 +187,34 @@
                                     alert(json.success === undefined ? json.error : json.success);
                                 });
                     });
-                
-            });
-
-            //根据读者工号查询读者信息
-            $("#userNo").blur(function (event) {
-                $.getJSON(remoteIP + '/managerGetUser', {userNo: $.trim($("#userNo").val()) }, function (json, textStatus) {
-                    //先清除原有数据
-                    $("#userName").add($("#userName")).add($("#deptName")).add($("#userMail")).text('');
-                    //再填充新的数据
-                    var reader = json;
-                    $("#userName").text(reader.userName);
-                    $("#deptName").text(reader.deptName);
-                    $("#userMail").text(reader.userMail);
-                    readerKind = reader.AUTHORITY_ID; //TODO,需查明实际字段
-                    limitBookNo = reader.limitBookNo; //TODO,需查明实际字段
-                    borrowedNo = reader.borrowedNo; //TODO,需查明实际字段
-                });
-            });
-            //如果在“读者工号”栏按回车键,调用上面的函数
-            $("#userNo").keydown(function (event) {
-                if (event.keyCode == 13) {
-                    $("#userNo").blur();
-                }
-            });
 
         });
 
-    </script>
+        //根据读者工号查询读者信息
+        $("#userNo").blur(function (event) {
+            $.getJSON(remoteIP + '/managerGetUser', {userNo: $.trim($("#userNo").val()) }, function (json, textStatus) {
+                //先清除原有数据
+                $("#userName").add($("#userName")).add($("#deptName")).add($("#userMail")).text('');
+                //再填充新的数据
+                var reader = json;
+                $("#userName").text(reader.userName);
+                $("#deptName").text(reader.deptName);
+                $("#userMail").text(reader.userMail);
+                readerKind = reader.AUTHORITY_ID; //TODO,需查明实际字段
+                limitBookNo = reader.limitBookNo; //TODO,需查明实际字段
+                borrowedNo = reader.borrowedNo; //TODO,需查明实际字段
+            });
+        });
+        //如果在“读者工号”栏按回车键,调用上面的函数
+        $("#userNo").keydown(function (event) {
+            if (event.keyCode == 13) {
+                $("#userNo").blur();
+            }
+        });
+
+    });
+
+</script>
 
 </head>
 <body onload="showLeftTime()">
