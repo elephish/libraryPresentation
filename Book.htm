@@ -24,6 +24,12 @@
     <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
     <script type="text/javascript" src="js/variables.js"></script>
+    <style type="text/css">
+        <!--
+        input {height:15px;}
+        body {font-size:14px;}
+        -->
+    </style>
     <script language="javascript" type="text/javascript">
         <!--
         //获得当前时间,刻度为一千分一秒
@@ -69,7 +75,7 @@
             //馆藏类型 {id,collection_type_name}
             $.getJSON(remoteIP + '/selectCollectionTypeName', function (json, textStatus) {
                 $.each(json, function (index, val) {
-                    $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>&nbsp;&nbsp;" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
                     if (index % 7 == 0 && index != 0) {
                         $("#collectionTypeDiv").append($("<br>"));
                     }
@@ -80,7 +86,7 @@
             //分类号[{id:'', bookType:''}]
             $.getJSON(remoteIP + '/selectBookType', function (json, textStatus) {
                 $.each(json, function (index, val) {
-                    $("#bookTypeDiv").append("<input type='checkbox' value='" + val.bookType + "'></input>" + val.bookType + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    $("#bookTypeDiv").append("<input type='checkbox' value='" + val.bookType + "'></input>&nbsp;" + val.bookType + "&nbsp;&nbsp;&nbsp;&nbsp;");
                     if (index % 7 == 0 && index != 0) {
                         $("#bookTypeDiv").append($("<br>"));
                     }

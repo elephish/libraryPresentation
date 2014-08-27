@@ -62,6 +62,7 @@
                 clearTable();
                 $.getJSON(remoteIP + '/managerSearchBorrowRecordWithKey', {key: $.trim($("#searchContent").val()) }, function (json, textStatus) {
                     fillTable(json);
+                    $("#totalNum").html(json.length);
                 });
             }).click();
             //检索框回车事件
@@ -303,7 +304,7 @@
 
 <tr>
     <td colspan="9" height="25">
-        <div align="center">记录总条数：8 当前页1/1总页数 <a href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0"
+        <div align="center">记录总条数：<p id="totalNum"></p> 当前页1/1总页数 <a href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0"
                                                  class="red">首页</a> <a
                 href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0" class="red">上一页</a> <a
                 href="file:///F:/FMIS/%E5%8E%9F%E5%9E%8B/pay_manage.html?currentpage=0" class="red">下一页</a> <a

@@ -24,6 +24,12 @@
     <script type="text/javascript" src="js/scrolltopcontrol.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
     <script type="text/javascript" src="js/variables.js"></script>
+    <style type="text/css">
+    <!--
+    input {height:15px;}
+    body {font-size:14px;}
+    -->
+    </style>
     <!--javascript-->
     <script language="javascript" type="text/javascript">
         <!--
@@ -48,11 +54,20 @@
             //馆藏类型 {id,collection_type_name}
             $.getJSON(remoteIP + '/selectCollectionTypeName', function (json, textStatus) {
                 $.each(json, function (index, val) {
-                    $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                    if (index % 7 == 0 && index != 0) {
+                    $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>&nbsp&nbsp" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    if ( (index+1) % 3 == 0 && index != 0) {
                         $("#collectionTypeDiv").append($("<br>"));
                     }
-                    ;
+                });
+            });
+
+            //读者权限
+            $.getJSON('/listAuthority', function(json, textStatus) {
+                $.each(json, function(index, val) {
+                    $("#readerTypeDiv").append("<input type='checkbox' value='" + val.authorityName + "'></input>&nbsp&nbsp" + val.authorityName + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    if ((index+1) % 3 == 0 && index != 0) {
+                        $("#readerTypeDiv").append($("<br>"));
+                    }
                 });
             });
 
@@ -70,7 +85,17 @@
             $("#addCollectionTypeButton").click(function (event) {
                 $.getJSON(remoteIP + '/systemAddCollectionType', {collectionTypeName: $.trim($("#newCollectionType").val())}, function (json, textStatus) {
                     alert(json.success === undefined ? json.error : json.success);
+                    $("#collectionTypeDiv").empty();
+                    $.getJSON(remoteIP + '/selectCollectionTypeName', function (json, textStatus) {
+                        $.each(json, function (index, val) {
+                            $("#collectionTypeDiv").append("<input type='checkbox' value='" + val.collectionTypeName + "'></input>&nbsp&nbsp" + val.collectionTypeName + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                            if ((index+1) % 3 == 0 && index != 0) {
+                                $("#collectionTypeDiv").append($("<br>"));
+                            }
+                        });
+                    });
                 });
+                
             });
 
             //读者权限，增加
@@ -83,7 +108,17 @@
                             reloadDays: $.trim($("#reloadDays").val()), },
                         function (json, textStatus) {
                             alert(json.success === undefined ? json.error : json.success);
+                            $("#readerTypeDiv").empty();
+                            $.getJSON('/listAuthority', function(json, textStatus) {
+                                $.each(json, function(index, val) {
+                                    $("#readerTypeDiv").append("<input type='checkbox' value='" + val.authorityName + "'></input>&nbsp&nbsp" + val.authorityName + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                                    if ((index+1) % 3 == 0 && index != 0) {
+                                        $("#readerTypeDiv").append($("<br>"));
+                                    }
+                                });
+                            });
                         });
+                
             });
 
             //每人最大购书需求，修改
@@ -219,7 +254,7 @@
 </div>
 <div id="contentsec">
     <div class="inner">
-        <div class="fullwidth_system_metadata box left" style="float：center；">
+        <div class="fullwidth_system_metadata box left" style="float：center;width:600px">
             <h2 class="widget-head-border colr">元数据设置</h2>
             <!-- Event List Start -->
             <div class="events-list">
@@ -247,6 +282,7 @@
                                     <p><a class="widget-book_sum colr"><font size=2px>现有馆藏类型：</font>
 
                                         <div id="collectionTypeDiv"></div>
+                                        <br>
                                         <P>
                                             <button style="text-align:center; vertical-align:middle ;font-size:12px;">
                                                 &nbsp;删除所选类型&nbsp;</button>
@@ -300,45 +336,10 @@
 
                                             <p><a class="widget-book_sum colr"><font size=2px>现有读者类型：</font>
 
-                                                <p>
-
-                                                <P>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input
-                                                        name="r-auth" type="checkbox" value=""/><font
-                                                        size=2px>正式员工</font>
-                                                </label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input name="L-type"
-                                                                                                type="checkbox"
-                                                                                                value=""/><font
-                                                        size=2px>外注</font> </label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input
-                                                        name="r-auth" type="checkbox" value=""/><font
-                                                        size=2px>离职人员</font>
-                                                </label>
-                                                </P>
-
-                                                <p>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input
-                                                        name="r-auth" type="checkbox" value=""/><font
-                                                        size=2px>实习生</font></label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input
-                                                        name="r-auth" type="checkbox" value=""/><font
-                                                        size=2px>临时人员</font></label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp; <label><input name="L-type" type="checkbox"
-                                                                                           value=""/><font
-                                                        size=2px>日本老师</font></label>
-                                                </P>
-
-                                                <p>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input
-                                                        name="r-auth" type="checkbox" value=""/><font
-                                                        size=2px>江苏富士通</font></label>
-                                                </P>
+                                                <div id="readerTypeDiv"></div>
                                                 <br>
-
                                                 <P>
-                                                    <button style="text-align:center; vertical-align:middle ;font-size:12px;">
-                                                        &nbsp;删除所选类型&nbsp;</button>
+                                                    <button style="text-align:center; vertical-align:middle ;font-size:12px;"> &nbsp;删除所选类型&nbsp;</button>
                                                 </P>
                                                 <br>
                                             </p>
